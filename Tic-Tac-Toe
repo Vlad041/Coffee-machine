@@ -1,0 +1,34 @@
+inp = input('Enter cells:')
+wins = 0
+result = False
+
+print("---------")
+for i in range(0, 9, 3):
+    print("| " + "{} {} {}".format(inp[i], inp[i+1], inp[i+2]) + " |")
+print("---------")
+
+if inp[0] == '_':
+    result = 'Impossible'
+else:
+    win_con = [[inp[i], inp[i+1], inp[i+2]] for i in range(0, 9, 3)] \
+              + [[inp[i], inp[i+3], inp[i+6]] for i in range(0, 3, 1)]\
+              + [[inp[0], inp[4], inp[8]], [inp[2], inp[4], inp[6]]]
+
+    for i in win_con:
+        if (set(i) == {'X'} or set(i) == {'O'}) and wins == 1:
+            result = 'Impossible'
+        elif set(i) == {'X'}:
+            result = 'X wins'
+            wins = 1
+        elif set(i) == {'O'}:
+            result = 'O wins'
+            wins = 1
+
+    if result == False:
+        try:
+            inp.index('_')
+            result = 'Game not finished'
+        except:
+            result = 'Draw'
+
+print(result)
