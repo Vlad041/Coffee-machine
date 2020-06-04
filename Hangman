@@ -1,0 +1,21 @@
+print('H A N G M A N\n')
+word = 'javascript'
+guess = list('-' * len(word))
+attempts = 8
+print(''.join(guess))
+
+while attempts > 0:
+    print('Input a letter: ')
+    letter = input()
+    if letter in word:
+        position = [p for p, x in enumerate(word) if x == letter]
+        for i in position:
+            guess[i] = letter
+        print(''.join(guess))
+        attempts -= 1
+    if letter not in word:
+        print('No such letter in the word\n')
+        print(''.join(guess))
+        attempts -= 1
+else:
+    print('Thanks for playing!')
