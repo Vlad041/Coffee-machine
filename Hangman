@@ -1,21 +1,30 @@
-print('H A N G M A N\n')
-word = 'javascript'
+import random
+print('H A N G M A N')
+all_words = ['python', 'java', 'kotlin', 'javascript']
+word = random.choice(all_words)
 guess = list('-' * len(word))
 attempts = 8
-print(''.join(guess))
+used_letters = set()
 
 while attempts > 0:
-    print('Input a letter: ')
+    print()
+    print(''.join(guess))
+    if '-' not in guess:
+        print('You guessed the word!\n You survived!')
+        break
+    print('Input a letter:')
     letter = input()
-    if letter in word:
+    if letter in used_letters and letter in word:
+        print('No improvements')
+        attempts -= 1
+    elif letter in word:
         position = [p for p, x in enumerate(word) if x == letter]
         for i in position:
             guess[i] = letter
-        print(''.join(guess))
+        used_letters.add(letter)
+    elif letter not in word:
+        print('No such letter in the word')
         attempts -= 1
-    if letter not in word:
-        print('No such letter in the word\n')
-        print(''.join(guess))
-        attempts -= 1
+        used_letters.add(letter)
 else:
-    print('Thanks for playing!')
+    print('You are hanged!')
