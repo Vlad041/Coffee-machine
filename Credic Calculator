@@ -1,0 +1,63 @@
+import math
+import argparse
+
+years = 0
+months = 0
+m = 1
+lst = []
+
+parser = argparse.ArgumentParser(description='Credit Calculator')
+parser.add_argument('--type', type=str, help='type of payment')
+parser.add_argument('--payment', type=int, help='Annuity payment')
+parser.add_argument('--principal', type=int, help='Credit principal')
+parser.add_argument('--periods', type=int, help='Number of periods(months)')
+parser.add_argument('--interest', type=float, help='Credit interest')
+
+args = parser.parse_args()
+
+if (args.type is None) or (args.type not in ['annuity', 'diff']):
+    print('Incorrect parameters')
+
+elif args.type == 'diff':
+    if (args.principal is None) or \
+            (args.periods is None) or \
+            (args.interest is None) or \
+            (args.payment is not None):
+        print('Incorrect parameters')
+    else:
+        i = args.interest / 1200
+        n = args.periods
+        while args.periods >= 1:
+            D = math.ceil(args.principal / n + i * (args.principal - (args.principal * (m - 1)) / n))
+            args.periods -= 1
+            lst.append(D)
+            print('Month {}: paid out {}'.format(m, D))
+            m += 1
+        overpayment = sum(lst) - args.principal
+        print('Overpayment = {}'.format(overpayment))
+elif args.type == 'annuity':
+    if args.interest is None:
+        print('Incorrect parameters')
+    elif args.periods is None:
+        i = args.interest / 1200
+        n = round(math.log((args.payment / (args.payment - i * args.principal)), 1 + i))
+        years = math.floor(n / 12)
+        months = math.ceil(n - (years * 12))
+        if n / 12 % 1 != 0:
+            months += 1
+        overpayment = args.payment * n - args.principal
+        if months > 0:
+            print('You need {} years and {} months to repay this credit!'.format(years, months))
+        elif months == 0:
+            print('You need {} years to repay this credit!'.format(years))
+        print('Overpayment = {}'.format(overpayment))
+    elif args.payment is None:
+        i = args.interest / 1200
+        a = args.principal * (i * pow((1 + i), args.periods) / (pow((1 + i), args.periods) - 1))
+        print('Your annuity payment = ' + str(math.ceil(a)) + '!')
+    elif args.principal is None:
+        i = args.interest / 1200
+        p = math.floor(args.payment / (i * pow(1 + i, args.periods) / (pow(1 + i, args.periods) - 1)))
+        overpayment = args.payment * args.periods - p
+        print('Your credit principal = ' + str(p) + '!')
+        print('Overpayment = {}'.format(overpayment))
