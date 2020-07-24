@@ -10,14 +10,14 @@ while attempts > 0:
     print()
     print(''.join(guess))
     if '-' not in guess:
-        print('You guessed the word!\n You survived!')
+        print('You guessed the word!'
+              'You survived!')
         break
-    print('Input a letter:')
-    letter = input()
-    if letter.isalpha() is False or letter.lower() is False:
-        print('It is not an ASCII lowercase letter')
-    elif len(letter) != 1:
+    letter = input('Input a letter:')
+    if len(letter) != 1:
         print('You should input a single letter')
+    elif letter == letter.upper():
+        print('It is not an ASCII lowercase letter')
     elif letter in used_letters:
         print('You already typed this letter')
     elif letter in word:
