@@ -20,7 +20,6 @@ while attempts > 0:
         print('You should input a single letter')
     elif letter in used_letters:
         print('You already typed this letter')
-        attempts -= 1
     elif letter in word:
         position = [p for p, x in enumerate(word) if x == letter]
         for i in position:
